@@ -412,6 +412,7 @@ participant "__p:Pays__" as p
 participant "__pMap\n:Map<String,\nPays>__" as m
 create jr
 ->> jr : <<create>>
+activate jr
 note right: JeuRisk est l'objet racine. **Contrôleur** ne s'applique pas ici, car il ne s'agit pas d'une opération système
 loop i<5
 create d
@@ -420,11 +421,13 @@ note over jr,d: par **Créateur**\nJeuRisk agrège Dé
 end loop
 create pr
 jr ->> pr : <<create>>
+activate pr
 note over jr,pr: par **Créateur**\nJeuRisk agrège PlateauRisk
 create m
 pr ->> m : pMap = <<create>>
 note over pr,m: par **Créateur**: PlateauRisk agrège Map<String, Pays>
 pr -> pr : continentsAvecPays[] =\nchargerContinentsAvecPays
+activate pr
 note right : Par **Expert**\nCharger les données d'un fichier JSON
 ' continents
 loop i<continentsAvecPays.size
@@ -436,11 +439,18 @@ create p
 pr ->> p : p = create(continentsAvecPays[i].pays[j].nom, ...)
 note over pr,p: par **Créateur**: PlateauRisk agrège Pays
 pr -> m : add(p)
+activate m
+deactivate m
 note right: Par **Expert**
 pr -> c : add(p)
+activate c
+deactivate c
 note right: Par **Expert**
 end loop
 end loop
+deactivate pr
+deactivate pr
+deactivate jr
 @enduml
 ```
 ## Réduire le décalage des représentations
