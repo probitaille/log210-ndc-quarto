@@ -1,36 +1,120 @@
 # Réalisations de cas d'utilisation (RDCU) {#sec-rdcu}
 
-Les réalisations de cas d'utilisation (RDCU) sont le sujet du chapitre F17/A18\ {{< fa solid book >}}.
-Voici les points importants pour la méthodologie:
+## Introduction
 
-- Une RDCU est une synthèse des informations spécifiées dans le MDD, le DSS et les contrats d'opération.
-Elle sert à esquisser une solution (qui n'est pas encore codée) afin de rendre plus explicite l'activité impliquant des choix de conception.
-Si vous n'avez pas bien compris les autres éléments (MDD, DSS, etc.), il vous sera difficile de réussir les RDCU.
-Il est normal de ne pas tout comprendre au début, alors posez des questions si vous ne comprenez pas.
-- De manière générale, toute bonne RDCU doit faire les choses suivantes:
-  - spécifier un contrôleur (pour la première opération système dans un DSS, qui sera le même pour le reste des opérations dans le DSS);
-  - satisfaire les postconditions du contrat d'opération correspondant;
-  - faire usage des classes conceptuelles du MDD et respecter leurs associations et cardinalités;
-  - rechercher les informations qui sont éventuellement rendues à l'acteur dans le DSS.
-- Il s'agit d'un diagramme de séquence en UML.
-Il faut alors maîtriser la notation UML pour ces diagrammes, mais on applique la notation de manière agile:
-  - Il n'est pas nécessaire de faire les boîtes d'activation, car ça prend du temps de les faire correctement lorsqu'on dessine à la main un diagramme;
-  - On doit se servir des annotations pour documenter les choix (GRASP);
-  - On dessine à la main des diagrammes puisqu'on peut faire ça en équipe sur un tableau blanc, mais aussi, à l'examen, vous devez faire des diagrammes à la main;
-  - Au lieu d'un message pointillé indiquant le retour d'une valeur à la fin de l'exécution d'une méthode, on utilise l'affectation sur le message (comme dans la programmation), par exemple `c = getClient(...)` à la @fig-RDCU_ID_en_objets.
-- Le livre de @craig_uml_2005 présente quelques RDCU qui sont des *diagrammes de communication*. 
+Les réalisations de cas d'utilisation (RDCU) sont le sujet du chapitre F17/A18\ {{< fa solid book >}}.
+À noter que le livre de @craig_uml_2005 présente quelques RDCU qui sont des *diagrammes de communication*. 
 Cette notation n'est pas utilisée dans ce manuel, car elle est plus complexe à utiliser et elle est comparable à la notation des diagrammes de séquence.
-- Faire des RDCU est plus agile que coder, car, dans un diagramme, on peut voir le flux de plusieurs messages à travers plusieurs classes.
-Dans une solution codée, il serait nécessaire d'ouvrir plusieurs fichiers afin de voir le code de chaque méthode (message), et l'on ne peut pas voir toute la dynamique de la même manière.
-Faire des changements à un diagramme (avant de le coder) est en principe plus facile que de changer le code source.
-On peut également se servir des structures (`List`, `Array`, `Map`, etc.) dans un diagramme, avant que celles-ci ne soient créées.
-- Faire des RDCU est une activité créative.
+
+Les RDCU décrivent comment un système réalise les fonctionnalités spécifiées dans un cas d'utilisation.
+
+Cela est généralement fait en reliant le cas d'utilisation à d'autres informations spécifiées dans le MDD, le DSS et les contrats d'opération, en utilisant des diagrammes de séquence UML afin de détailler les interactions entre les différents objets ou composants du système qui accomplissent l'objectif de l'acteur. Une RDCU sert à esquisser une solution (qui n'est pas encore codée) afin de rendre plus explicite l'activité impliquant des choix de conception. Si vous n'avez pas bien compris les autres éléments (MDD, DSS, etc.), il vous sera difficile de réussir les RDCU.
+
+Faire des RDCU est plus agile que coder, car dans un diagramme, on peut voir le flux de plusieurs messages à travers plusieurs classes. Dans une solution codée, il serait nécessaire d'ouvrir plusieurs fichiers afin de voir le code de chaque méthode (message), et l'on ne peut pas voir toute la dynamique de la même manière. Faire des changements à un diagramme (avant de le coder) est en principe plus facile que de changer le code source. On peut également se servir des structures (`List`, `Array`, `Map`, etc.) dans un diagramme, avant que celles-ci ne soient créées.
+
+Faire des RDCU est une activité créative.
 Un diagramme dynamique en UML peut avoir une mauvaise logique, car il s'agit d'un dessin.
 *Le codage dans un langage de programmation est la seule manière de valider une RDCU*.
 Évidemment, la programmation prend beaucoup plus de temps et n'est pas insignifiante.
 Faire une RDCU est comme faire un *plan* pour un bâtiment, tandis que faire de la programmation est comme *construire* le bâtiment.
 Si un plan contient des erreurs de conception, on va les connaître lors de la construction.
 Alors, votre RDCU sera incertaine jusqu'à ce que vous la traduisiez en code exécuté et testé.
+
+De manière générale, toute bonne RDCU doit faire les choses suivantes:
+  - spécifier un contrôleur (pour la première opération système dans un DSS, qui sera le même pour le reste des opérations dans le DSS);
+  - satisfaire les postconditions du contrat d'opération correspondant;
+  - faire usage des classes conceptuelles du MDD et respecter leurs associations et cardinalités;
+  - rechercher les informations qui sont éventuellement rendues à l'acteur dans le DSS.
+
+## Notation UML des diagrammes de séquence {#sec-notation-sequence}
+
+Les diagrammes de séquence UML utilisent une notation graphique standardisée pour représenter les interactions entre objets au fil du temps. Cette section présente les éléments essentiels de cette notation.
+
+### Participants (objets et instances)
+
+Les objets sont représentés par des rectangles en haut du diagramme. Chaque participant possède :
+
+- **Un nom** : peut être un nom d'instance (`monInstance`), un nom de classe (`:MaClasse`), ou les deux (`monInstance:MaClasse`)
+- **Une ligne de vie** : ligne verticale pointillée descendant du rectangle, représentant l'existence de l'objet dans le temps
+
+::: {.callout-tip}
+## Convention de notation
+- `:NomClasse` indique une instance anonyme de la classe
+- `nomObjet:NomClasse` identifie une instance spécifique
+- Le deux-points est toujours présent entre le nom d'instance et le nom de classe
+:::
+
+### Boîtes d'activation (barres d'activation)
+
+Les boîtes d'activation sont des rectangles étroits superposés sur la ligne de vie d'un objet. Elles indiquent :
+
+- **La période d'activité** : quand l'objet exécute une opération ou attend une réponse
+- **Les appels imbriqués** : une boîte peut contenir d'autres boîtes, montrant la profondeur de la pile d'appels
+- **La durée d'exécution** : la hauteur de la boîte représente le temps d'exécution
+
+Ces boîtes peuvent être omises pour simplifier le dessin à la main, mais elles sont utiles et recommandées pour bien comprendre la séquence d'exécution et visualiser la complexité des interactions.
+
+### Types de messages
+
+Les messages sont représentés par des flèches entre les lignes de vie des participants. Chaque type de flèche a une signification précise :
+
+#### Messages synchrones (appels de méthode)
+
+- **Notation** : Flèche pleine (→)
+- **Signification** : Appel de méthode synchrone où l'émetteur attend la fin de l'exécution
+- **Syntaxe** : `nomMethode(parametre1:type, parametre2:type):TypeRetour`
+- **Exemple** : `calculerTotal(item1:float, item2:float):float`
+
+#### Messages de retour
+
+- **Notation** : Flèche pointillée (⇢)
+- **Signification** : Valeur retournée à la fin de l'exécution d'une méthode
+- **Syntaxe** : `nomValeur:TypeRetour`
+
+::: {.callout-note}
+## Affectation vs flèche de retour
+La flèche de retour pointillée est la notation UML standard et est utilisée pour plus de clarté dans les diagrammes formels. Cette façon de faire met en évidence le moment précis du retour, surtout si d'autres opérations se produisent entre l'appel et le retour.
+
+Il est aussi possible d'utiliser une forme plus concise par affectation (`variable = methode()`), ce qui ressemble plus au code. C'est utile quand le retour est immédiat ou quand il n'est pas utile de mettre l'accent sur le moment exact du retour.
+:::
+
+#### Messages de création d'objets
+
+- **Notation** : Flèche pleine pointant vers le rectangle de l'objet créé (pas vers sa ligne de vie)
+- **Stéréotype** : Peut inclure `<<create>>` ou le constructeur de l'objet `new Object()`
+- **Placement** : Le rectangle de l'objet et sa ligne de vie de l'objet créé commence au point de création sur l'axe vertical
+
+::: {.callout-note}
+## Flèche pleine vs flèche pointillée
+
+Des versions de UML 1.x (années 1990)** utilisaient une flèche pointillée avec le stéréotype `<<create>>` pour la création d'objets.
+
+Depuis les version de UML 2.x (année 2005+), la norme a été révisée pour utiliser une flèche pleine, alignée avec la sémantique d'appel synchrone
+:::
+
+#### Messages à soi-même (auto-appel)
+
+- **Notation** : Flèche qui revient vers la même ligne de vie
+- **Signification** : L'objet s'envoie un message à lui-même (appel de méthode privée)
+- **Boîte d'activation** : Crée une nouvelle boîte d'activation imbriquée
+
+### Notes et commentaires
+
+Les notes (rectangles avec coin replié) permettent d'ajouter :
+
+- **Justifications GRASP** : Documenter les principes de conception appliqués
+- **Contraintes** : Préciser des conditions ou limitations
+- **Explications** : Clarifier des choix de conception complexes
+
+### Ressources complémentaires
+Pour approfondir la notation UML des diagrammes de séquence, consultez :
+
+- [Spécification UML 2.5.1 officielle](https://www.omg.org/spec/UML/)
+- [Tutoriel PlantUML pour les diagrammes de séquence](https://plantuml.com/sequence-diagram)
+:::
+
+
+## Processus de création d'une RDCU
 
 Tout le processus de proposition d'une solution (RDCU) peut être visualisé comme un diagramme d'activités, comme illustré sur la @fig-RDCU_Aide_Memoire.
 
