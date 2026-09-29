@@ -42,20 +42,19 @@ Les objets sont représentés par des rectangles en haut du diagramme. Chaque pa
 - `:NomClasse` indique une instance anonyme de la classe
 - `nomInstance:NomClasse` identifie une instance spécifique
 - Le deux-points est toujours présent entre le nom d'instance et le nom de classe
-- Les noms soulignés représentent des instances concrètes d'objets, c'est-à-dire des objets qui existent réellement en mémoire lors de l'exécution. Dans un diagramme de séquence, vous travaillez presque toujours avec des instances (donc soulignées), car les séquences montrent des interactions entre objets concrets durant l'exécution.
 :::
 
 ```{.plantuml genurl="true" #fig-RDCU_Identification_Participants caption="Identifications des participants dans un diagramme de séquence UML." }
 @startuml
 !include ecriture.pumlinclude
 hide footbox
-participant "__patrice:Enseignant__" as Patrice
+participant "patrice:Enseignant" as Patrice
 
 note over of Patrice
 Instance nommée
 end note
 
-participant "__:Etudiant__" as Etudiant
+participant ":Etudiant" as Etudiant
 
 note over of Etudiant
 Instance anonyme
@@ -154,10 +153,10 @@ Depuis les version de UML 2.x (année 2005+), la norme a été révisée pour ut
 hide footbox
 autoactivate on
 
-participant "__:Jeu__" as Jeu
+participant ":Jeu" as Jeu
 
 -> Jeu : démarrer()
-Jeu -> "__j1:Joueur__" ** : <<create>>
+Jeu -> ":j1:Joueur" ** : <<create>>
 
 @enduml
 ```
@@ -275,8 +274,8 @@ Lorsque l'attribut d'un objet doit être modifié juste après la création de c
 !include ecriture.pumlinclude
 scale 1.3
 skinparam sequenceMessageAlign left
-participant "__:Plateau__" as p
-participant "__:Case__" as c
+participant ":Plateau" as p
+participant ":Case" as c
 loop
 create c
 p ->> c : create(nom)
@@ -317,8 +316,8 @@ Pour plus de détails, voir le chapitre sur la Visibilité (F18/A19)\ {{< fa sol
 
 scale 1.3
 skinparam sequenceMessageAlign left
-participant "__a:A__" as A
-participant "__b:B__" as B
+participant "a:A" as A
+participant "b:B" as B
 -> A : ...
 activate A
 A -> B : unMessage()
@@ -342,9 +341,9 @@ Un autre exemple du livre de @craig_uml_2005 est l'identifiant `codeArticle` tra
 !include ecriture.pumlinclude
 scale 1.1
 skinparam sequenceMessageAlign center
-participant "__:Registre__" as R
-participant "__:Magasin__" as M
-participant "__v:Vente__" as v
+participant ":Registre" as R
+participant ":Magasin" as M
+participant "v:Vente" as v
 -> R : saisirClientPourRemise(idClient:String)
 activate R
 R -> M : c = getClient(idClient:String)
@@ -372,8 +371,8 @@ Un tableau associatif fournit une méthode `get` ou `find` pour rechercher un ob
 !include ecriture.pumlinclude
 scale 1.1
 skinparam sequenceMessageAlign center
-participant "__:Plateau__" as P
-participant "__cMap\n:Map<String, Case>__" as m
+participant ":Plateau" as P
+participant "cMap\n:Map<String, Case>" as m
 -> P : s = getCase(nom:String)
 activate P
 note right : Plateau agrège toutes les\nCases et possède un Map\navec nom comme clé.
@@ -404,12 +403,12 @@ Voici quelques points importants:
 scale 0.75
 skinparam sequenceMessageAlign center
 
-participant "__:JeuRisk__" as jr
-participant "__:Dé__" as d
-participant "__:PlateauRisk__" as pr
-participant "__:Continent__" as c
-participant "__p:Pays__" as p
-participant "__pMap\n:Map<String,\nPays>__" as m
+participant ":JeuRisk" as jr
+participant ":Dé" as d
+participant ":PlateauRisk" as pr
+participant ":Continent" as c
+participant "p:Pays" as p
+participant "pMap\n:Map<String,\nPays>" as m
 create jr
 ->> jr : <<create>>
 activate jr
@@ -479,12 +478,14 @@ Dans la section F30.8/A33.7\ {{< fa solid book >}}, Larman mentionne le pattern 
 ![Dés dans la vraie vie (["Hand of chance"](https://www.flickr.com/photos/aerust/9590772048/) [(CC BY 2.0)](https://creativecommons.org/licenses/by/2.0/) par [Alexandra E Rust](https://www.flickr.com/people/aerust/)).](images/flickr_aerust_hand_of_chance.jpg){width=80% #fig-main_des}
 
 ```{#fig-de_logiciel .plantuml genurl="true" caption="Dé dans un logiciel selon *Faire soi-même*." }
+@startuml
 !include ecriture.pumlinclude
 hide empty methods
 class Dé {
     +face : int
     + brasser()
 }
+@enduml
 ```
 
 **Faire soi-même**: "Moi, objet logiciel, je fais moi-même ce qu'on fait normalement à l'objet réel dont je suis une abstraction" de @coad97a.
@@ -508,8 +509,8 @@ Vous pouvez utiliser VS Code pour vous aider avec le TypeScript, mais cet outil 
 @startuml
 scale 1.0
 !include normal.pumlinclude
-participant "__:A__" as B
-participant "__:B__" as A
+participant ":A" as B
+participant ":B" as A
 [-> B : execute(3)
 activate B
 B -> A : result = setItem("Fred")
@@ -547,9 +548,9 @@ class B {
     @startuml
     !include normal.pumlinclude
     scale 1.0
-    participant "__:Bernard__" as Bob
-    participant "__:Alice__" as Alice
-    participant "__:Autre__" as Other
+    participant ":Bernard" as Bob
+    participant ":Alice" as Alice
+    participant ":Autre" as Other
     [-> Bob : init
     activate Bob
     Bob -> Alice : allô(12)
